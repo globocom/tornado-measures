@@ -1,4 +1,4 @@
-from distutils.core import setup
+from distutils.core import setup, find_packages
 
 
 with open('README.md') as f:
@@ -14,8 +14,6 @@ setup(name="tornado-measures",
       url="http://github.com/globocom/tornado-measures",
       download_url='',
       license="MIT",
-      packages=[''],
-      package_dir={'': 'src'},
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
@@ -23,6 +21,11 @@ setup(name="tornado-measures",
           'Operating System :: OS Independent',
           'Programming Language :: Python'
       ],
+      packages=find_packages(
+          exclude=(
+              'tests',
+          ),
+      ),
       include_package_data=True,
       zip_safe=True,
       install_requires=['tornado>=4', 'measures'],
