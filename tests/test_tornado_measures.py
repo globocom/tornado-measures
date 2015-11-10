@@ -21,7 +21,8 @@ class TornadoMeasuresTestCase(AsyncTestCase):
         setup_measures(
             client='my-test-app',
             address=('localhost', 123),
-            client_class = MyHTTPClient
+            dimensions={'tsuru-appname': 'My-App'},
+            client_class=MyHTTPClient,
         )
 
         self.response = response
@@ -39,3 +40,4 @@ class TornadoMeasuresTestCase(AsyncTestCase):
         self.assertEqual(dimensions['url'], 'http://globo.com/g1')
         self.assertEqual(dimensions['status_code'], 201)
         self.assertEqual(dimensions['host'], 'globo.com')
+        self.assertEqual(dimensions['tsuru-appname'], 'My-App')

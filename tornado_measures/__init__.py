@@ -4,15 +4,20 @@ import time
 from measures import Measure
 from tornado.util import import_object, unicode_type
 from tornado.httpclient import AsyncHTTPClient
-from urlparse import urlparse
+
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 
 class MeasuredClientMixIn(object):
 
-    def initialize(self, client, address, *args, **kwargs):
+    def initialize(self, client, address, dimensions, *args, **kwargs):
         super(MeasuredClientMixIn, self).initialize(*args, **kwargs)
 
         self.measure = Measure(client, address)
+        self.dimensions = dimensions
 
     def fetch_impl(self, request, callback):
         now = time.time()
@@ -32,10 +37,13 @@ class MeasuredClientMixIn(object):
             'response_time': response_time
         }
 
+        if self.dimensions:
+            dimensions.update(self.dimensions)
+
         self.measure.count('http_response', dimensions=dimensions)
 
 
-def setup_measures(client, address,
+def setup_measures(client, address, dimensions=None,
                    client_class='tornado.simple_httpclient.SimpleAsyncHTTPClient',
                    **kwargs):
 
@@ -47,5 +55,5 @@ def setup_measures(client, address,
 
     AsyncHTTPClient.configure(
         HTTPMeasureClient, client=client, address=address,
-        **kwargs
+        dimensions=dimensions, **kwargs
     )
