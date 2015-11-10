@@ -28,6 +28,6 @@ setup(name="tornado-measures",
       ),
       include_package_data=True,
       zip_safe=True,
-      install_requires=['tornado', 'measures'],
+      install_requires=['setuptools>=17.1', 'tornado', 'measures'],
       tests_require=["nose==1.2.1", "pep8==1.4.1", "mock==1.0.1"],
       )
