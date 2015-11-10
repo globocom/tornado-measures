@@ -1,8 +1,5 @@
 .PHONY: deps-test clean unit upload
 
-deps-test:
-	@pip install -r test_requirements.txt
-
 clean:
 	@echo "Cleaning up build and *.pyc files..."
 	@find . -name "*.pyc" -delete
@@ -13,8 +10,9 @@ clean:
 	@rm -rf ./MANIFEST
 	@echo "Done!"
 
-test: clean deps-test
-	@nosetests -vv -s tests
+test: clean
+	@pip install setuptools\>=17
+	@python ./setup.py test
 
 upload:
 	@python ./setup.py sdist upload -r pypi
